@@ -57,41 +57,68 @@ const posts = [
 ];
 
 
-
 const postsContainer = document.getElementById('container');
 
 posts.forEach((post, index) => {
+    postsContainer.innerHTML += `
+        <div class="post">
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                        <img class="profile-pic" src="${post.author.image}" alt="${post.author.name}">                    
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${post.author.name}</div>
+                        <div class="post-meta__time">${post.created}</div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="post__text">${post.content}</div>
+            <div class="post__image">
+                <img src="${post.media}" alt="${post.author.name}">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button js-like-button" href="#" data-postid="${post.id}">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <strong id="like-counter-${post.id}" data-postid="${post.id}" class="js-likes-counter">${post.likes}</strong> persone
+                    </div>
+                </div> 
+            </div>            
+        </div>`;
+});
 
-    postsContainer.innerHTML += 
-    `<div class="post">
-    <div class="post__header">
-        <div class="post-meta">                    
-            <div class="post-meta__icon">
-                <img class="profile-pic" src="${post.author.image}" alt="${post.author.name}">                    
-            </div>
-            <div class="post-meta__data">
-                <div class="post-meta__author">${post.author.name}</div>
-                <div class="post-meta__time">${post.created}</div>
-            </div>                    
-        </div>
-    </div>
-    <div class="post__text">${post.content}</div>
-    <div class="post__image">
-        <img src="${post.media}" alt="${post.author.name}">
-    </div>
-    <div class="post__footer">
-        <div class="likes js-likes">
-            <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="${post.id}">
-                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                    <span class="like-button__label">Mi Piace</span>
-                </a>
-            </div>
-            <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">${post.likes}</b> persone
-            </div>
-        </div> 
-    </div>            
-</div>`;
 
-})
+// mi seleziono tutti i bottoni per aggiungere l'evento
+const likeButtonsList = postsContainer.querySelectorAll('a.like-button.js-like-button');
+
+const likeCountersList = postsContainer.querySelectorAll('strong.js-likes-counter');
+
+// ho l id degli elementi che parte da 1 quindi faccio partire il ciclo for da 1 e aggiungo la classe al bottone cliccato
+
+for (let index = 0; index < likeButtonsList.length; index++) {
+// mi creo una nuova variabile del bottone corrente, che si sostiuira a likebuttons
+    const currentLikeButton = likeButtonsList[index];
+    // creo l evento al click per aggiungere il like
+    currentLikeButton.addEventListener('click', function( event ){
+        event.preventDefault();
+// se contiene la classe like mi toglie la classe
+        if (currentLikeButton.classList.contains('like-button--liked')){
+            currentLikeButton.classList.remove('like-button--liked');
+            // aggiorno il counter, sovrascrivo quello che ha l utente,  decremento
+            likeCountersList[index].innerHTML = parseInt(likeCountersList[index].innerHTML) - 1;
+        } else {
+            // altrimenti metti la classe like
+            currentLikeButton.classList.add('like-button--liked');
+            // e aggiorna il counter del lelemento index, sovrascrivo quello che ha l utente, incremento
+            likeCountersList[index].innerHTML = parseInt(likeCountersList[index].innerHTML) + 1;
+        }
+    });
+}
+
+// ho seguito le indicazioni della correzione, seguendo la registrazione e comprendendo i concetti
