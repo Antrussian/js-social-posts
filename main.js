@@ -56,9 +56,10 @@ const posts = [
     }
 ];
 
-
+// mi seleziono il container nel DOM
 const postsContainer = document.getElementById('container');
-
+// mi ciclo ogni elemento per mostralo in modo dinamico nel DOM, con il template literal per rendere dinamici gli elementi al suo interno. 
+//creo l arrow function dato che è una funzione semplice e non necessita di molti calcoli
 posts.forEach((post, index) => {
     postsContainer.innerHTML += `
         <div class="post">
